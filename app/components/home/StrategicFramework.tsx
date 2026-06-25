@@ -5,6 +5,8 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
 const steps = [
   {
     number: "01",
@@ -143,6 +145,87 @@ const icons: ComponentType[] = [
   ScaleIcon,
 ];
 
+function AmbientGrowthBackground() {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+    >
+      {/* Same pastel background shading */}
+      <div
+        data-background-float
+        className="absolute -left-52 -top-52 h-[38rem] w-[38rem] rounded-full bg-[#cce5ff]/65 blur-3xl"
+      />
+
+      <div
+        data-background-float
+        className="absolute -bottom-64 -right-52 h-[43rem] w-[43rem] rounded-full bg-[#ffd4e7]/75 blur-3xl"
+      />
+
+      <div
+        data-background-float
+        className="absolute left-[34%] top-[28%] h-[28rem] w-[28rem] rounded-full bg-[#f0ddff]/55 blur-3xl"
+      />
+
+      {/* Growth graph visual */}
+      <svg
+        viewBox="0 0 1440 900"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full opacity-70"
+      >
+        <path
+          data-ambient-path
+          d="M-40 680 C 190 500, 280 700, 495 520 S 800 340, 1010 470 S 1270 280, 1500 110"
+          fill="none"
+          stroke="#225a98"
+          strokeOpacity="0.14"
+          strokeWidth="2"
+          strokeDasharray="9 14"
+        />
+
+        <path
+          data-ambient-path
+          d="M-20 740 C 190 620, 330 770, 555 600 S 845 480, 1090 550 S 1310 400, 1500 290"
+          fill="none"
+          stroke="#f264a8"
+          strokeOpacity="0.16"
+          strokeWidth="2"
+          strokeDasharray="5 16"
+        />
+
+        <path
+          data-ambient-path
+          d="M120 80 C 360 180, 500 70, 700 170 S 1100 210, 1330 70"
+          fill="none"
+          stroke="#4c9cf5"
+          strokeOpacity="0.13"
+          strokeWidth="2"
+          strokeDasharray="8 16"
+        />
+
+        <circle cx="495" cy="520" r="8" fill="#f264a8" fillOpacity="0.22" />
+        <circle cx="1010" cy="470" r="8" fill="#4c9cf5" fillOpacity="0.22" />
+        <circle cx="1090" cy="550" r="8" fill="#a855f7" fillOpacity="0.2" />
+      </svg>
+
+      <div
+        data-ambient-orbit
+        className="absolute left-[8%] top-[18%] hidden h-44 w-44 rounded-full border border-dashed border-[#225a98]/20 lg:block"
+      >
+        <span className="absolute -left-2 top-1/2 h-3 w-3 rounded-full bg-[#f264a8]/70 shadow-[0_0_0_8px_rgba(242,100,168,0.10)]" />
+        <span className="absolute right-2 top-6 h-2.5 w-2.5 rounded-full bg-[#4c9cf5]/70 shadow-[0_0_0_8px_rgba(76,156,245,0.10)]" />
+      </div>
+
+      <div
+        data-ambient-orbit
+        className="absolute bottom-[12%] right-[8%] hidden h-56 w-56 rounded-full border border-dashed border-[#f264a8]/20 lg:block"
+      >
+        <span className="absolute bottom-8 left-4 h-3 w-3 rounded-full bg-[#a855f7]/60 shadow-[0_0_0_8px_rgba(168,85,247,0.10)]" />
+      </div>
+    </div>
+  );
+}
+
 function FrameworkCard({
   step,
   Icon,
@@ -157,30 +240,39 @@ function FrameworkCard({
   return (
     <article
       className={`
-        group relative flex h-full flex-col overflow-hidden rounded-[1.25rem]
-        border border-[#102957]/12 bg-white
-        transition-[border-color,box-shadow,background-color] duration-300 ease-out
+        group relative flex h-full flex-col overflow-hidden rounded-[1.5rem]
+        border border-[#102957]/12 bg-white/90 backdrop-blur-md
+        transition-[border-color,box-shadow,background-color] duration-300
         hover:border-[#102957]/30
-        hover:shadow-[0_18px_45px_rgba(16,41,87,0.12)]
+        hover:shadow-[0_24px_60px_rgba(16,41,87,0.14)]
         ${
           isMobile
-            ? "min-h-[185px] p-5 sm:min-h-[210px] sm:p-6"
-            : "p-4 xl:p-5"
+            ? "min-h-[235px] p-6 sm:min-h-[270px] sm:p-7"
+            : "p-5 xl:p-6 2xl:p-7"
         }
       `}
     >
+      <div
+        className="absolute -right-20 -top-20 h-48 w-48 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+        style={{ backgroundColor: `${step.color}38` }}
+      />
+
       <span
-        className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100"
+        className="absolute inset-x-0 top-0 h-[2px] origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
         style={{ backgroundColor: step.color }}
       />
 
-      <div className="flex items-center justify-between">
+      <div className="relative z-10 flex items-center justify-between">
         <span
           className={`
-            grid place-items-center rounded-xl text-white
-            transition-transform duration-300 ease-out
+            grid place-items-center rounded-2xl text-white
+            transition-transform duration-300
             group-hover:rotate-6 group-hover:scale-110
-            ${isMobile ? "h-10 w-10" : "h-8 w-8 xl:h-9 xl:w-9"}
+            ${
+              isMobile
+                ? "h-11 w-11"
+                : "h-11 w-11 xl:h-12 xl:w-12 2xl:h-14 2xl:w-14"
+            }
           `}
           style={{ backgroundColor: step.color }}
         >
@@ -189,17 +281,17 @@ function FrameworkCard({
 
         <span
           className={`font-bold tracking-[0.16em] text-[#102957]/35 ${
-            isMobile ? "text-[11px]" : "text-[9px]"
+            isMobile ? "text-[11px]" : "text-[10px] xl:text-[11px]"
           }`}
         >
           {step.number}
         </span>
       </div>
 
-      <div className="mt-auto">
+      <div className="relative z-10 mt-auto">
         <p
           className={`font-bold uppercase tracking-[0.16em] ${
-            isMobile ? "text-[10px]" : "text-[8px]"
+            isMobile ? "text-[10px]" : "text-[9px] xl:text-[10px]"
           }`}
           style={{ color: step.color }}
         >
@@ -208,8 +300,13 @@ function FrameworkCard({
 
         <h3
           className={`
-            font-semibold leading-[0.92] tracking-[-0.045em] text-[#102957]
-            ${isMobile ? "mt-2 text-[1.7rem] sm:text-[2rem]" : "mt-1.5 text-[clamp(1rem,1.55vw,1.45rem)]"}
+            [text-wrap:balance] font-semibold leading-[0.88]
+            tracking-[-0.06em] text-[#102957]
+            ${
+              isMobile
+                ? "mt-2 text-[1.85rem] sm:text-[2.2rem]"
+                : "mt-3 text-[clamp(1.5rem,2.15vw,2.65rem)]"
+            }
           `}
           style={{ fontFamily: "var(--font-cormorant), serif" }}
         >
@@ -217,18 +314,25 @@ function FrameworkCard({
         </h3>
 
         <p
-          className={`font-medium leading-[1.45] text-[#102957]/60 ${
-            isMobile
-              ? "mt-3 text-[13px] sm:text-sm"
-              : "mt-2 line-clamp-2 text-[8px] xl:text-[10px]"
-          }`}
+          className={`
+            font-medium text-[#102957]/62
+            ${
+              isMobile
+                ? "mt-3 text-[13px] leading-[1.5] sm:text-sm"
+                : "mt-3 text-[11px] leading-5 xl:text-[13px] xl:leading-6 2xl:text-[14px]"
+            }
+          `}
         >
           {step.description}
         </p>
 
-        <div className={`flex items-center justify-between ${isMobile ? "mt-5" : "mt-3"}`}>
+        <div
+          className={`flex items-center justify-between ${
+            isMobile ? "mt-6" : "mt-5 xl:mt-6"
+          }`}
+        >
           <span
-            className="h-px w-8 transition-all duration-300 group-hover:w-14"
+            className="h-px w-10 transition-all duration-300 group-hover:w-20"
             style={{ backgroundColor: step.color }}
           />
 
@@ -251,15 +355,88 @@ export default function StrategicFramework() {
 
   useGSAP(
     () => {
-      gsap.registerPlugin(ScrollTrigger);
-
       const section = sectionRef.current;
       const stage = stageRef.current;
 
       if (!section || !stage) return;
 
+      const q = gsap.utils.selector(section);
+
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      const ambientOrbit = q("[data-ambient-orbit]");
+      const ambientFloat = q("[data-background-float]");
+      const ambientPaths = q("[data-ambient-path]");
+
+      const ambientTweens: gsap.core.Tween[] = [];
+
+      if (!prefersReducedMotion) {
+        ambientTweens.push(
+          gsap.to(ambientOrbit, {
+            rotation: 360,
+            duration: 38,
+            repeat: -1,
+            ease: "none",
+          })
+        );
+
+        ambientTweens.push(
+          gsap.to(ambientFloat, {
+            x: (index) => (index % 2 === 0 ? 22 : -22),
+            y: (index) => (index % 2 === 0 ? -16 : 16),
+            duration: (index) => 7 + index * 1.5,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+          })
+        );
+
+        ambientTweens.push(
+          gsap.to(ambientPaths, {
+            strokeDashoffset: -180,
+            duration: 12,
+            repeat: -1,
+            ease: "none",
+          })
+        );
+      }
+
       const media = gsap.matchMedia();
 
+      /* Mobile + tablet card entrance */
+      media.add("(max-width: 1023px)", () => {
+        if (prefersReducedMotion) return;
+
+        const mobileCards = q("[data-mobile-card]");
+
+        const mobileIntro = gsap.fromTo(
+          mobileCards,
+          {
+            autoAlpha: 0,
+            y: 28,
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            stagger: 0.1,
+            duration: 0.65,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 82%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+
+        return () => {
+          mobileIntro.kill();
+        };
+      });
+
+      /* Desktop connected card animation */
       media.add("(min-width: 1024px)", () => {
         const cards = cardRefs.current.filter(
           (card): card is HTMLDivElement => card !== null
@@ -273,13 +450,15 @@ export default function StrategicFramework() {
           (node): node is HTMLSpanElement => node !== null
         );
 
-        if (cards.length !== 4 || lines.length !== 3 || nodes.length !== 6) {
+        const growthCore = q("[data-growth-core]");
+
+        if (
+          cards.length !== steps.length ||
+          lines.length !== 3 ||
+          nodes.length !== 6
+        ) {
           return;
         }
-
-        const prefersReducedMotion = window.matchMedia(
-          "(prefers-reduced-motion: reduce)"
-        ).matches;
 
         let timeline: gsap.core.Timeline | null = null;
         let resizeFrame: number | null = null;
@@ -305,10 +484,12 @@ export default function StrategicFramework() {
           const cardWidth = cards[0].offsetWidth;
           const cardHeight = cards[0].offsetHeight;
 
-          const edgeX = 32;
-          const edgeY = 24;
-          const gapX = 42;
-          const gapY = 40;
+          const edgeX = Math.max(20, stageWidth * 0.02);
+          const edgeY = Math.max(18, stageHeight * 0.035);
+
+          /* Enough center space for the growth visual */
+          const gapX = Math.max(125, Math.min(180, stageWidth * 0.12));
+          const gapY = Math.max(38, Math.min(72, stageHeight * 0.085));
 
           const widthScale =
             (stageWidth - edgeX * 2 - gapX) / (cardWidth * 2);
@@ -334,42 +515,42 @@ export default function StrategicFramework() {
           const centerX = stageWidth / 2;
           const centerY = stageHeight / 2;
 
-          const centers = layout.map((item) => ({
+          const cardCenters = layout.map((item) => ({
             x: centerX + item.x,
             y: centerY + item.y,
           }));
 
-          const connectionPoints = [
+          const points = [
             {
-              x: centers[0].x + finalCardWidth / 2,
-              y: centers[0].y,
+              x: cardCenters[0].x + finalCardWidth / 2,
+              y: cardCenters[0].y,
             },
             {
-              x: centers[1].x - finalCardWidth / 2,
-              y: centers[1].y,
+              x: cardCenters[1].x - finalCardWidth / 2,
+              y: cardCenters[1].y,
             },
             {
-              x: centers[1].x,
-              y: centers[1].y + finalCardHeight / 2,
+              x: cardCenters[1].x,
+              y: cardCenters[1].y + finalCardHeight / 2,
             },
             {
-              x: centers[2].x,
-              y: centers[2].y - finalCardHeight / 2,
+              x: cardCenters[2].x,
+              y: cardCenters[2].y - finalCardHeight / 2,
             },
             {
-              x: centers[2].x - finalCardWidth / 2,
-              y: centers[2].y,
+              x: cardCenters[2].x - finalCardWidth / 2,
+              y: cardCenters[2].y,
             },
             {
-              x: centers[3].x + finalCardWidth / 2,
-              y: centers[3].y,
+              x: cardCenters[3].x + finalCardWidth / 2,
+              y: cardCenters[3].y,
             },
           ];
 
           const linePairs = [
-            [connectionPoints[0], connectionPoints[1]],
-            [connectionPoints[2], connectionPoints[3]],
-            [connectionPoints[4], connectionPoints[5]],
+            [points[0], points[1]],
+            [points[2], points[3]],
+            [points[4], points[5]],
           ];
 
           cards.forEach((card, index) => {
@@ -377,19 +558,24 @@ export default function StrategicFramework() {
               xPercent: -50,
               yPercent: -50,
               x: layout[index].x,
-              y: stageHeight * 0.72,
-              scale: layout[index].scale * 0.92,
+              y: stageHeight * 0.62,
+              scale: layout[index].scale * 0.88,
               autoAlpha: 0,
               transformOrigin: "center center",
             });
+          });
+
+          gsap.set(growthCore, {
+            autoAlpha: 0,
+            scale: 0.72,
           });
 
           nodes.forEach((node, index) => {
             gsap.set(node, {
               xPercent: -50,
               yPercent: -50,
-              x: connectionPoints[index].x - centerX,
-              y: connectionPoints[index].y - centerY,
+              x: points[index].x - centerX,
+              y: points[index].y - centerY,
               scale: 0,
               autoAlpha: 0,
             });
@@ -401,7 +587,10 @@ export default function StrategicFramework() {
             const start = toSvgPoint(from, stageWidth, stageHeight);
             const end = toSvgPoint(to, stageWidth, stageHeight);
 
-            line.setAttribute("d", `M ${start.x} ${start.y} L ${end.x} ${end.y}`);
+            line.setAttribute(
+              "d",
+              `M ${start.x} ${start.y} L ${end.x} ${end.y}`
+            );
 
             const length = line.getTotalLength();
 
@@ -421,12 +610,23 @@ export default function StrategicFramework() {
               });
             });
 
+            gsap.set(growthCore, {
+              autoAlpha: 0.75,
+              scale: 1,
+            });
+
             nodes.forEach((node) => {
-              gsap.set(node, { scale: 1, autoAlpha: 1 });
+              gsap.set(node, {
+                scale: 1,
+                autoAlpha: 1,
+              });
             });
 
             lines.forEach((line) => {
-              gsap.set(line, { autoAlpha: 1, strokeDashoffset: 0 });
+              gsap.set(line, {
+                autoAlpha: 1,
+                strokeDashoffset: 0,
+              });
             });
 
             return;
@@ -436,38 +636,50 @@ export default function StrategicFramework() {
             scrollTrigger: {
               trigger: section,
               start: "top top",
-              end: () => `+=${Math.max(window.innerHeight * 3.5, 2200)}`,
+              end: () => `+=${Math.max(window.innerHeight * 3.2, 2100)}`,
               pin: true,
-              scrub: 0.85,
+              pinSpacing: true,
+              scrub: 0.9,
               anticipatePin: 1,
+              fastScrollEnd: true,
               invalidateOnRefresh: true,
             },
           });
 
           timeline
+            .to(
+              growthCore,
+              {
+                autoAlpha: 0.75,
+                scale: 1,
+                duration: 0.2,
+                ease: "power3.out",
+              },
+              0
+            )
             .to(cards[0], {
               y: layout[0].y,
               scale: layout[0].scale,
               autoAlpha: 1,
-              duration: 0.28,
+              duration: 0.27,
               ease: "power3.out",
             })
             .to(nodes[0], {
               scale: 1,
               autoAlpha: 1,
-              duration: 0.1,
+              duration: 0.09,
               ease: "back.out(2)",
             })
             .to(lines[0], {
               autoAlpha: 1,
               strokeDashoffset: 0,
-              duration: 0.25,
+              duration: 0.24,
               ease: "power2.out",
             })
             .to(nodes[1], {
               scale: 1,
               autoAlpha: 1,
-              duration: 0.1,
+              duration: 0.09,
               ease: "back.out(2)",
             })
             .to(cards[1], {
@@ -480,19 +692,19 @@ export default function StrategicFramework() {
             .to(nodes[2], {
               scale: 1,
               autoAlpha: 1,
-              duration: 0.1,
+              duration: 0.09,
               ease: "back.out(2)",
             })
             .to(lines[1], {
               autoAlpha: 1,
               strokeDashoffset: 0,
-              duration: 0.25,
+              duration: 0.24,
               ease: "power2.out",
             })
             .to(nodes[3], {
               scale: 1,
               autoAlpha: 1,
-              duration: 0.1,
+              duration: 0.09,
               ease: "back.out(2)",
             })
             .to(cards[2], {
@@ -505,19 +717,19 @@ export default function StrategicFramework() {
             .to(nodes[4], {
               scale: 1,
               autoAlpha: 1,
-              duration: 0.1,
+              duration: 0.09,
               ease: "back.out(2)",
             })
             .to(lines[2], {
               autoAlpha: 1,
               strokeDashoffset: 0,
-              duration: 0.25,
+              duration: 0.24,
               ease: "power2.out",
             })
             .to(nodes[5], {
               scale: 1,
               autoAlpha: 1,
-              duration: 0.1,
+              duration: 0.09,
               ease: "back.out(2)",
             })
             .to(cards[3], {
@@ -531,7 +743,7 @@ export default function StrategicFramework() {
 
         buildTimeline();
 
-        const observer = new ResizeObserver(() => {
+        const resizeObserver = new ResizeObserver(() => {
           if (resizeFrame) cancelAnimationFrame(resizeFrame);
 
           resizeFrame = requestAnimationFrame(() => {
@@ -540,18 +752,28 @@ export default function StrategicFramework() {
           });
         });
 
-        observer.observe(stage);
+        resizeObserver.observe(stage);
 
         return () => {
           if (resizeFrame) cancelAnimationFrame(resizeFrame);
 
-          observer.disconnect();
+          resizeObserver.disconnect();
           timeline?.scrollTrigger?.kill();
           timeline?.kill();
         };
       });
 
-      return () => media.revert();
+      const refresh = () => ScrollTrigger.refresh();
+
+      window.addEventListener("load", refresh);
+      requestAnimationFrame(refresh);
+
+      return () => {
+        window.removeEventListener("load", refresh);
+
+        ambientTweens.forEach((tween) => tween.kill());
+        media.revert();
+      };
     },
     { scope: sectionRef }
   );
@@ -559,37 +781,92 @@ export default function StrategicFramework() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-white text-[#102957] lg:h-screen lg:overflow-hidden"
+      className="
+        relative min-h-[100svh] overflow-x-hidden
+        bg-[#fff9fc] text-[#102957]
+        lg:h-[100svh] lg:min-h-0 lg:overflow-hidden
+      "
     >
-      <div className="mx-auto max-w-[1400px] px-4 py-8 sm:px-7 sm:py-10 lg:grid lg:h-full lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-4 lg:px-12 lg:py-10">
-        <header className="relative z-30">
-          <h1
-            className="text-[clamp(3rem,5vw,6rem)] font-semibold leading-[0.87] tracking-[-0.06em]"
+      <AmbientGrowthBackground />
 
+      <div
+        className="
+          relative z-10 mx-auto max-w-[1560px] px-5 py-16
+          sm:px-8 sm:py-20
+          md:px-10 md:py-24
+          lg:grid lg:h-full lg:grid-rows-[auto_minmax(0,1fr)]
+          lg:gap-5 lg:px-12 lg:py-[clamp(1.75rem,4vh,3.5rem)]
+          xl:px-16
+        "
+      >
+        <header className="relative z-30 max-w-[830px]">
+          <div className="mb-4 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#225a98] sm:text-xs">
+            <span className="h-px w-9 bg-[#f264a8]" />
+            The Growth Process
+          </div>
+
+          <h2
+            className="
+              text-[clamp(2.8rem,10vw,5rem)]
+              font-semibold leading-[0.86] tracking-[-0.065em]
+              sm:text-[clamp(3.5rem,7vw,5.5rem)]
+              lg:text-[clamp(3.3rem,5vw,6rem)]
+            "
             style={{ fontFamily: "var(--font-cormorant), serif" }}
           >
             Growth <span className="text-[#f264a8]">Framework</span>
-          </h1>
+          </h2>
+
+          <p className="mt-4 max-w-[560px] text-sm font-medium leading-6 text-[#102957]/62 sm:text-base sm:leading-7">
+            A clear, connected system that turns insights into consistent,
+            measurable growth.
+          </p>
         </header>
 
-        {/* Mobile + Tablet: normal natural-height layout */}
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:hidden">
+        {/* Mobile + tablet */}
+        <div className="mt-9 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:hidden">
           {steps.map((step, index) => {
             const Icon = icons[index];
 
             return (
-              <FrameworkCard
-                key={step.number}
-                step={step}
-                Icon={Icon}
-                mode="mobile"
-              />
+              <div key={step.number} data-mobile-card>
+                <FrameworkCard step={step} Icon={Icon} mode="mobile" />
+              </div>
             );
           })}
         </div>
 
-        {/* Desktop: fixed 100vh GSAP animation */}
-        <div ref={stageRef} className="relative hidden min-h-0 lg:block">
+        {/* Desktop */}
+        <div ref={stageRef} className="relative mt-5 hidden min-h-0 lg:block">
+          <div
+            data-growth-core
+            className="
+              pointer-events-none absolute left-1/2 top-1/2 z-0
+              grid h-[clamp(115px,13vw,175px)] w-[clamp(115px,13vw,175px)]
+              -translate-x-1/2 -translate-y-1/2 place-items-center
+              rounded-full border border-[#102957]/10 bg-white/35
+              text-center backdrop-blur-sm
+            "
+          >
+            <div className="absolute inset-3 rounded-full border border-dashed border-[#225a98]/25" />
+            <div className="absolute inset-7 rounded-full bg-gradient-to-br from-[#cce5ff]/70 via-white/75 to-[#ffd4e7]/65" />
+
+            <div className="relative z-10">
+              <p className="text-[8px] font-bold uppercase tracking-[0.18em] text-[#f264a8]">
+                Growth System
+              </p>
+
+              <p
+                className="mt-1 text-[clamp(1.3rem,2vw,2rem)] font-semibold leading-[0.83] tracking-[-0.06em] text-[#102957]"
+                style={{ fontFamily: "var(--font-cormorant), serif" }}
+              >
+                Insight
+                <br />
+                to Scale
+              </p>
+            </div>
+          </div>
+
           <svg
             viewBox="0 0 1000 1000"
             preserveAspectRatio="none"
@@ -604,7 +881,7 @@ export default function StrategicFramework() {
                 }}
                 fill="none"
                 stroke="#102957"
-                strokeOpacity="0.42"
+                strokeOpacity="0.35"
                 strokeWidth="1.5"
                 strokeLinecap="round"
               />
@@ -627,7 +904,12 @@ export default function StrategicFramework() {
                 ref={(node) => {
                   nodeRefs.current[index] = node;
                 }}
-                className="pointer-events-none absolute left-1/2 top-1/2 z-30 grid h-5 w-5 place-items-center rounded-full border border-[#102957]/20 bg-white"
+                className="
+                  pointer-events-none absolute left-1/2 top-1/2 z-30
+                  grid h-5 w-5 place-items-center rounded-full
+                  border border-[#102957]/20 bg-white
+                  shadow-[0_8px_18px_rgba(16,41,87,0.10)]
+                "
               >
                 <span
                   className="h-1.5 w-1.5 rounded-full"
@@ -646,8 +928,12 @@ export default function StrategicFramework() {
                 ref={(node) => {
                   cardRefs.current[index] = node;
                 }}
-                className="absolute left-1/2 top-1/2 h-[clamp(155px,21svh,225px)] w-[clamp(210px,21vw,300px)]"
-                style={{ zIndex: 20 + index }}
+                className="
+                  absolute left-1/2 top-1/2 z-20
+                  h-[clamp(205px,29svh,345px)]
+                  w-[clamp(290px,28vw,445px)]
+                  will-change-transform
+                "
               >
                 <FrameworkCard step={step} Icon={Icon} mode="desktop" />
               </div>

@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+gsap.registerPlugin(ScrollTrigger);
+
 type Story = {
   number: string;
   category: string;
@@ -50,8 +52,6 @@ const stories: Story[] = [
     href: "/case-studies/google-ads-roas",
     accent: "#a855f7",
   },
-
-  // Replace these sample additions with verified client data before publishing.
   {
     number: "04",
     category: "Creative Testing",
@@ -126,12 +126,13 @@ function StoryCard({ story }: { story: Story }) {
   return (
     <article
       className="
-        group relative flex h-full min-h-[410px] flex-col overflow-hidden
-        rounded-[1.25rem] border border-[#102957]/10 bg-white p-4
-        transition-[border-color,box-shadow] duration-300
-        hover:border-[#102957]/30
-        hover:shadow-[0_18px_50px_rgba(16,41,87,0.12)]
-        sm:min-h-[445px] sm:p-5
+        group relative flex h-full min-h-[415px] flex-col overflow-hidden
+        rounded-[1.5rem] border border-[#102957]/12 bg-white/90 p-5
+        shadow-[0_14px_40px_rgba(16,41,87,0.06)] backdrop-blur-md
+        transition-[border-color,box-shadow,transform] duration-300
+        hover:-translate-y-1 hover:border-[#102957]/30
+        hover:shadow-[0_24px_60px_rgba(16,41,87,0.14)]
+        sm:min-h-[460px] sm:p-6
         lg:min-h-0 lg:p-6
         xl:p-7
       "
@@ -142,20 +143,20 @@ function StoryCard({ story }: { story: Story }) {
       />
 
       <span
-        className="pointer-events-none absolute -bottom-10 -right-3 select-none text-[7rem] font-semibold leading-none tracking-[-0.11em] text-[#102957]/[0.035] sm:text-[9rem]"
+        className="pointer-events-none absolute -bottom-10 -right-2 select-none text-[8rem] font-semibold leading-none tracking-[-0.11em] text-[#102957]/[0.035] sm:text-[10rem]"
         style={{ fontFamily: "var(--font-cormorant), serif" }}
       >
         {story.number}
       </span>
 
-      <div className="relative z-10 flex items-center justify-between gap-2">
-        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+      <div className="relative z-10 flex items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <span
             className="
-              grid h-8 w-8 shrink-0 place-items-center rounded-lg text-white
+              grid h-10 w-10 shrink-0 place-items-center rounded-xl text-white
               transition-transform duration-300
               group-hover:rotate-6 group-hover:scale-110
-              sm:h-10 sm:w-10 sm:rounded-xl
+              xl:h-11 xl:w-11
             "
             style={{ backgroundColor: story.accent }}
           >
@@ -163,21 +164,21 @@ function StoryCard({ story }: { story: Story }) {
           </span>
 
           <span
-            className="truncate text-[8px] font-bold uppercase tracking-[0.1em] sm:text-[10px] sm:tracking-[0.14em]"
+            className="truncate text-[9px] font-bold uppercase tracking-[0.13em] sm:text-[10px] sm:tracking-[0.16em]"
             style={{ color: story.accent }}
           >
             {story.category}
           </span>
         </div>
 
-        <span className="shrink-0 text-[9px] font-bold tracking-[0.14em] text-[#102957]/35 sm:text-[11px]">
+        <span className="shrink-0 text-[10px] font-bold tracking-[0.14em] text-[#102957]/35">
           {story.number}
         </span>
       </div>
 
-      <div className="relative z-10 mt-7 sm:mt-9">
+      <div className="relative z-10 mt-8 sm:mt-10">
         <p
-          className="text-[clamp(2.5rem,7vw,5.5rem)] font-semibold leading-none tracking-[-0.08em]"
+          className="text-[clamp(3rem,7vw,5.8rem)] font-semibold leading-none tracking-[-0.08em]"
           style={{
             color: story.accent,
             fontFamily: "var(--font-cormorant), serif",
@@ -186,25 +187,26 @@ function StoryCard({ story }: { story: Story }) {
           {story.metric}
         </p>
 
-        <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 sm:mt-3 sm:gap-x-3">
-          <span className="text-[8px] font-semibold uppercase tracking-[0.1em] text-[#102957]/45 sm:text-[10px]">
+        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
+          <span className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#102957]/45 sm:text-[10px]">
             {story.metricLabel}
           </span>
 
           <span className="h-1 w-1 rounded-full bg-[#102957]/30" />
 
-          <span className="text-[9px] font-bold text-[#102957] sm:text-[11px]">
+          <span className="text-[10px] font-bold text-[#102957] sm:text-[11px]">
             {story.result}
           </span>
         </div>
       </div>
 
-      <div className="relative z-10 mt-auto pt-7 sm:pt-8">
+      <div className="relative z-10 mt-auto pt-8">
         <h3
           className="
-            line-clamp-5 text-[clamp(1.15rem,3.8vw,2.35rem)]
-            font-semibold leading-[0.94] tracking-[-0.05em] text-[#102957]
-            lg:line-clamp-4 lg:text-[clamp(1.25rem,1.7vw,2.1rem)]
+            line-clamp-4 text-[clamp(1.35rem,3.7vw,2.35rem)]
+            font-semibold leading-[0.92] tracking-[-0.055em] text-[#102957]
+            sm:text-[clamp(1.6rem,3vw,2.5rem)]
+            lg:text-[clamp(1.25rem,1.72vw,2.15rem)]
           "
           style={{ fontFamily: "var(--font-cormorant), serif" }}
         >
@@ -213,16 +215,90 @@ function StoryCard({ story }: { story: Story }) {
 
         <Link
           href={story.href}
-          className="mt-5 inline-flex items-center gap-2 text-[11px] font-bold text-[#102957] transition-all duration-300 hover:gap-3 sm:mt-6 sm:text-sm"
+          className="mt-6 inline-flex items-center gap-2 text-xs font-bold text-[#102957] transition-all duration-300 hover:gap-3 sm:text-sm"
         >
           Read More
 
-          <span className="grid h-7 w-7 place-items-center rounded-full border border-[#102957]/15 transition-all duration-300 group-hover:border-[#102957] group-hover:bg-[#102957] group-hover:text-white sm:h-9 sm:w-9">
+          <span className="grid h-9 w-9 place-items-center rounded-full border border-[#102957]/15 transition-all duration-300 group-hover:border-[#102957] group-hover:bg-[#102957] group-hover:text-white">
             <ArrowUpRight />
           </span>
         </Link>
       </div>
     </article>
+  );
+}
+
+function GrowthBackground() {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+    >
+      {/* Same background shading as previous sections */}
+      <div
+        data-bg-float
+        className="absolute -left-48 -top-52 h-[36rem] w-[36rem] rounded-full bg-[#cce5ff]/65 blur-3xl"
+      />
+
+      <div
+        data-bg-float
+        className="absolute -bottom-52 -right-44 h-[40rem] w-[40rem] rounded-full bg-[#ffd1e5]/75 blur-3xl"
+      />
+
+      <div
+        data-bg-float
+        className="absolute left-[42%] top-[30%] h-[22rem] w-[22rem] rounded-full bg-[#efdcff]/50 blur-3xl"
+      />
+
+      {/* Soft growth graph visualization */}
+      <svg
+        viewBox="0 0 1440 900"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full opacity-70"
+      >
+        <path
+          data-bg-path
+          d="M-50 690 C 140 530, 280 710, 490 520 S 780 330, 1000 455 S 1270 250, 1510 95"
+          fill="none"
+          stroke="#225a98"
+          strokeOpacity="0.13"
+          strokeWidth="2"
+          strokeDasharray="10 16"
+        />
+
+        <path
+          data-bg-path
+          d="M-40 770 C 180 620, 330 770, 550 610 S 850 450, 1080 550 S 1300 410, 1510 280"
+          fill="none"
+          stroke="#f264a8"
+          strokeOpacity="0.15"
+          strokeWidth="2"
+          strokeDasharray="6 18"
+        />
+
+        <path
+          data-bg-path
+          d="M100 80 C 330 170, 520 80, 710 165 S 1080 220, 1360 70"
+          fill="none"
+          stroke="#4c9cf5"
+          strokeOpacity="0.12"
+          strokeWidth="2"
+          strokeDasharray="8 17"
+        />
+
+        <circle cx="490" cy="520" r="8" fill="#f264a8" fillOpacity="0.22" />
+        <circle cx="1000" cy="455" r="8" fill="#4c9cf5" fillOpacity="0.2" />
+        <circle cx="1080" cy="550" r="8" fill="#a855f7" fillOpacity="0.18" />
+      </svg>
+
+      <div
+        data-bg-orbit
+        className="absolute left-[7%] top-[19%] hidden h-44 w-44 rounded-full border border-dashed border-[#225a98]/20 lg:block"
+      >
+        <span className="absolute -left-2 top-1/2 h-3 w-3 rounded-full bg-[#f264a8]/70 shadow-[0_0_0_8px_rgba(242,100,168,0.1)]" />
+        <span className="absolute right-3 top-6 h-2.5 w-2.5 rounded-full bg-[#4c9cf5]/70 shadow-[0_0_0_8px_rgba(76,156,245,0.1)]" />
+      </div>
+    </div>
   );
 }
 
@@ -238,27 +314,100 @@ export default function GrowthStories() {
 
   useGSAP(
     () => {
-      gsap.registerPlugin(ScrollTrigger);
-
       const section = sectionRef.current;
       const stage = stageRef.current;
       const rail = railRef.current;
       const progress = progressRef.current;
+
       const ctaButton = ctaButtonRef.current;
       const ctaArrow = ctaArrowRef.current;
       const ctaGlow = ctaGlowRef.current;
 
       if (!section || !stage || !rail || !progress) return;
 
+      const q = gsap.utils.selector(section);
+
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      const bgFloats = q("[data-bg-float]");
+      const bgPaths = q("[data-bg-path]");
+      const bgOrbits = q("[data-bg-orbit]");
+      const mobileCards = q("[data-mobile-card]");
+
+      const ambientTweens: gsap.core.Tween[] = [];
+
+      if (!reduceMotion) {
+        ambientTweens.push(
+          gsap.to(bgFloats, {
+            x: (index) => (index % 2 === 0 ? 20 : -20),
+            y: (index) => (index % 2 === 0 ? -15 : 15),
+            duration: (index) => 7 + index * 1.5,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+          })
+        );
+
+        ambientTweens.push(
+          gsap.to(bgPaths, {
+            strokeDashoffset: -180,
+            duration: 14,
+            repeat: -1,
+            ease: "none",
+          })
+        );
+
+        ambientTweens.push(
+          gsap.to(bgOrbits, {
+            rotation: 360,
+            duration: 38,
+            repeat: -1,
+            ease: "none",
+          })
+        );
+      }
+
       const media = gsap.matchMedia();
 
-      /* Desktop GSAP horizontal flow */
-      media.add("(min-width: 1024px)", () => {
-        const reduceMotion = window.matchMedia(
-          "(prefers-reduced-motion: reduce)"
-        ).matches;
-
+      /* Mobile + tablet normal scroll layout */
+      media.add("(max-width: 1023px)", () => {
         if (reduceMotion) return;
+
+        const mobileIntro = gsap.fromTo(
+          mobileCards,
+          {
+            autoAlpha: 0,
+            y: 30,
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.65,
+            stagger: 0.08,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 82%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+
+        return () => mobileIntro.kill();
+      });
+
+      /* Desktop pinned horizontal story rail */
+      media.add("(min-width: 1024px)", () => {
+        if (reduceMotion) {
+          gsap.set(progress, { scaleX: 1 });
+          gsap.set(stage, { overflowX: "auto" });
+          return;
+        }
+
+        gsap.set(rail, { x: 0 });
+        gsap.set(progress, { scaleX: 0 });
 
         const getTravelDistance = () =>
           Math.max(0, rail.scrollWidth - stage.clientWidth);
@@ -269,25 +418,30 @@ export default function GrowthStories() {
             start: "top top",
             end: () =>
               `+=${Math.max(
-                getTravelDistance() * 1.15,
-                window.innerHeight * 2.8
+                getTravelDistance() * 1.12,
+                window.innerHeight * 2.75
               )}`,
             pin: true,
+            pinSpacing: true,
             scrub: 0.9,
             anticipatePin: 1,
+            fastScrollEnd: true,
             invalidateOnRefresh: true,
           },
         });
 
         timeline
-          .to(rail, {
-            x: () => -getTravelDistance(),
-            duration: 1,
-            ease: "none",
-          })
-          .fromTo(
+          .to(
+            rail,
+            {
+              x: () => -getTravelDistance(),
+              duration: 1,
+              ease: "none",
+            },
+            0
+          )
+          .to(
             progress,
-            { scaleX: 0 },
             {
               scaleX: 1,
               duration: 1,
@@ -309,12 +463,12 @@ export default function GrowthStories() {
         };
       });
 
-      /* GSAP magnetic effect for last See More button */
+      /* CTA hover */
       const canHover = window.matchMedia(
         "(hover: hover) and (pointer: fine)"
       ).matches;
 
-      if (ctaButton && ctaArrow && ctaGlow && canHover) {
+      if (ctaButton && ctaArrow && ctaGlow && canHover && !reduceMotion) {
         const onEnter = () => {
           gsap.to(ctaButton, {
             scale: 1.035,
@@ -341,12 +495,9 @@ export default function GrowthStories() {
         const onMove = (event: MouseEvent) => {
           const rect = ctaButton.getBoundingClientRect();
 
-          const x = (event.clientX - rect.left - rect.width / 2) * 0.1;
-          const y = (event.clientY - rect.top - rect.height / 2) * 0.1;
-
           gsap.to(ctaButton, {
-            x,
-            y,
+            x: (event.clientX - rect.left - rect.width / 2) * 0.08,
+            y: (event.clientY - rect.top - rect.height / 2) * 0.08,
             duration: 0.35,
             ease: "power3.out",
           });
@@ -385,11 +536,18 @@ export default function GrowthStories() {
           ctaButton.removeEventListener("mouseenter", onEnter);
           ctaButton.removeEventListener("mousemove", onMove);
           ctaButton.removeEventListener("mouseleave", onLeave);
+
+          ambientTweens.forEach((tween) => tween.kill());
           media.revert();
         };
       }
 
-      return () => media.revert();
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+
+      return () => {
+        ambientTweens.forEach((tween) => tween.kill());
+        media.revert();
+      };
     },
     { scope: sectionRef }
   );
@@ -397,98 +555,122 @@ export default function GrowthStories() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-[#f8f9fc] py-11 text-[#102957] sm:py-14 lg:h-[100svh] lg:py-10"
+      className="
+        relative min-h-[100svh] overflow-x-clip bg-[#fff9fc] text-[#102957]
+        lg:h-[100svh] lg:min-h-0 lg:overflow-hidden
+      "
     >
-            {/* Beauty background */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-48 -top-52 h-[36rem] w-[36rem] rounded-full bg-[#cce5ff]/65 blur-3xl" />
-        <div className="absolute -bottom-52 -right-44 h-[40rem] w-[40rem] rounded-full bg-[#ffd1e5]/75 blur-3xl" />
-        <div className="absolute left-[42%] top-[30%] h-[22rem] w-[22rem] rounded-full bg-[#efdcff]/50 blur-3xl" />
-      </div>
+      <GrowthBackground />
 
-      
-      <div className="mx-auto flex min-h-full max-w-[1540px] flex-col px-4 sm:px-7 md:px-10 lg:h-full lg:px-12 xl:px-14">
+      <div
+        className="
+          relative z-10 mx-auto flex min-h-[100svh] max-w-[1600px] flex-col px-5 py-16
+          sm:px-8 sm:py-20
+          md:px-10 md:py-24
+          lg:h-full lg:min-h-0 lg:px-12 lg:py-[clamp(1.75rem,4vh,3.5rem)]
+          xl:px-16
+        "
+      >
         {/* Header */}
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <p className="mb-3 text-[9px] font-bold uppercase tracking-[0.22em] text-[#102957]/45 sm:text-[10px]">
+        <header className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-[720px]">
+            <p className="mb-4 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#225a98] sm:text-xs">
+              <span className="h-px w-9 bg-[#f264a8]" />
               Case Studies
             </p>
 
             <h1
-              className="text-[clamp(3rem,5vw,6rem)] font-semibold leading-[0.87] tracking-[-0.06em]"
-
+              className="
+                text-[clamp(2.9rem,10vw,5.4rem)]
+                font-semibold leading-[0.86] tracking-[-0.065em] text-[#102957]
+                sm:text-[clamp(3.7rem,7vw,5.8rem)]
+                lg:text-[clamp(3.5rem,5vw,6rem)]
+              "
               style={{ fontFamily: "var(--font-cormorant), serif" }}
             >
               Growth <span className="text-[#f264a8]">Stories</span>
             </h1>
           </div>
 
-          <p className="max-w-[480px] text-sm font-medium leading-relaxed text-[#102957]/60 sm:text-base lg:pb-1">
+          <p className="max-w-[480px] text-sm font-medium leading-6 text-[#102957]/62 sm:text-base sm:leading-7 lg:pb-1">
             Real results from our e-commerce growth strategies, built through
             sharper creative, stronger funnels and performance-led campaigns.
           </p>
-        </div>
+        </header>
 
-        {/* Horizontal rail */}
+        {/* Card rail */}
         <div
           ref={stageRef}
           className="
-            -mx-4 mt-8 overflow-x-auto px-4 pb-5
+            -mx-5 mt-9 overflow-x-auto px-5 pb-5
             snap-x snap-mandatory
             [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
-            sm:-mx-7 sm:px-7
+            sm:-mx-8 sm:px-8
             md:-mx-10 md:px-10
-            lg:mx-0 lg:mt-9 lg:min-h-0 lg:flex-1 lg:overflow-hidden lg:px-0 lg:pb-0 lg:snap-none
-            motion-reduce:lg:overflow-x-auto
+            lg:mx-0 lg:mt-8 lg:min-h-0 lg:flex-1 lg:overflow-hidden lg:px-0 lg:pb-0 lg:snap-none
           "
         >
           <div
             ref={railRef}
-            className="flex h-auto w-full items-stretch gap-3 sm:gap-4 lg:h-full lg:gap-5 xl:gap-6"
+            className="
+              flex h-auto w-max items-stretch gap-4 pr-5
+              sm:gap-5 sm:pr-8
+              lg:h-full lg:gap-6 lg:pr-[10vw]
+            "
           >
             {stories.map((story) => (
               <div
                 key={story.number}
+                data-mobile-card
                 className="
-                  w-[calc((100%_-_0.75rem)_/_2)] shrink-0 snap-start
-                  sm:w-[calc((100%_-_1rem)_/_2)]
-                  lg:h-full lg:w-[calc((100%_-_2.5rem)_/_3)] lg:snap-none
-                  xl:w-[calc((100%_-_3rem)_/_3)]
+                  w-[84vw] shrink-0 snap-start
+                  sm:w-[min(47vw,390px)]
+                  md:w-[min(42vw,420px)]
+                  lg:h-full lg:w-[clamp(290px,29vw,450px)] lg:snap-none
                 "
               >
                 <StoryCard story={story} />
               </div>
             ))}
 
-            {/* Last horizontal item: See More CTA */}
+            {/* CTA card */}
             <div
+              data-mobile-card
               className="
-                w-[calc((100%_-_0.75rem)_/_2)] shrink-0 snap-start
-                sm:w-[calc((100%_-_1rem)_/_2)]
-                lg:h-full lg:w-[calc((100%_-_2.5rem)_/_3)] lg:snap-none
-                xl:w-[calc((100%_-_3rem)_/_3)]
+                w-[84vw] shrink-0 snap-start
+                sm:w-[min(47vw,390px)]
+                md:w-[min(42vw,420px)]
+                lg:h-full lg:w-[clamp(290px,29vw,450px)] lg:snap-none
               "
             >
-              <article className="relative flex h-full min-h-[410px] flex-col overflow-hidden rounded-[1.25rem] bg-[#102957] p-4 text-white sm:min-h-[445px] sm:p-5 lg:min-h-0 lg:p-6 xl:p-7">
-                <span className="absolute -right-14 -top-16 h-48 w-48 rounded-full border border-white/10" />
-                <span className="absolute -bottom-16 -left-14 h-52 w-52 rounded-full border border-white/10" />
+              <article
+                className="
+                  relative flex h-full min-h-[415px] flex-col overflow-hidden rounded-[1.5rem]
+                  bg-[#102957] p-5 text-white shadow-[0_18px_55px_rgba(16,41,87,0.20)]
+                  sm:min-h-[460px] sm:p-6
+                  lg:min-h-0 lg:p-7
+                "
+              >
+                <span className="absolute -right-16 -top-16 h-56 w-56 rounded-full border border-white/10" />
+                <span className="absolute -bottom-20 -left-16 h-64 w-64 rounded-full border border-white/10" />
 
                 <div className="relative z-10">
-                  <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/45 sm:text-[10px]">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/45">
                     More Growth Stories
                   </span>
 
-                  {/* <h3
-                    className="mt-5 text-[clamp(2rem,5vw,4rem)] font-semibold leading-[0.88] tracking-[-0.065em]"
+                  <h3
+                    className="mt-7 text-[clamp(2.1rem,5vw,3.8rem)] font-semibold leading-[0.88] tracking-[-0.065em]"
                     style={{ fontFamily: "var(--font-cormorant), serif" }}
                   >
-                    See what happens when strategy meets execution.
-                  </h3> */}
+                    More results.
+                    <br />
+                    More growth.
+                  </h3>
 
-                  <p className="mt-5 max-w-sm text-xs leading-relaxed text-white/60 sm:text-sm">
-                    Explore the full collection of e-commerce growth stories,
-                    campaign breakdowns and performance insights.
+                  <p className="mt-5 max-w-sm text-sm leading-6 text-white/62">
+                    Explore campaign breakdowns, conversion wins, strategic
+                    experiments and real e-commerce performance stories.
                   </p>
                 </div>
 
@@ -496,7 +678,7 @@ export default function GrowthStories() {
                   <Link
                     ref={ctaButtonRef}
                     href="/case-studies"
-                    className="relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-[#f264a8] px-5 py-3.5 text-[11px] font-bold uppercase tracking-[0.14em] text-white transition-colors duration-300 hover:bg-white hover:text-[#102957] sm:px-6 sm:py-4"
+                    className="relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-[#f264a8] px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] text-white transition-colors duration-300 hover:bg-white hover:text-[#102957]"
                   >
                     <span
                       ref={ctaGlowRef}
@@ -516,12 +698,13 @@ export default function GrowthStories() {
         </div>
 
         {/* Mobile instruction */}
-        <div className="mt-1 flex items-center justify-between lg:hidden">
+        <div className="mt-2 flex items-center justify-between lg:hidden">
           <span className="text-[9px] font-bold uppercase tracking-[0.16em] text-[#102957]/40">
             Swipe to explore
           </span>
+
           <span className="text-[9px] font-bold uppercase tracking-[0.16em] text-[#102957]/40">
-            {stories.length + 1} slides
+            {stories.length + 1} stories
           </span>
         </div>
 

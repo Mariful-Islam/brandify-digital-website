@@ -54,7 +54,7 @@ export default function SitePreloader({
               </p>
 
               <h1
-                className="flex justify-center overflow-hidden text-[clamp(4rem,13vw,12rem)] font-semibold leading-[0.74] tracking-[-0.08em] text-[#102957]"
+                className="flex justify-center overflow-hidden text-[clamp(4rem,13vw,12rem)] font-semibold leading-[1.2] tracking-[-0.08em] text-[#102957]"
                 style={{ fontFamily: "var(--font-cormorant), serif" }}
               >
                 {Array.from(brandName).map((letter, index) => (

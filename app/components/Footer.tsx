@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 const services = [
   { label: "Media Buying", href: "/services" },
@@ -13,7 +14,7 @@ const links = [
   { label: "Services", href: "/services" },
   { label: "About", href: "/about" },
   { label: "Growth Stories", href: "/blog" },
-  { label: "Contact", href: "/contact-us" },
+  { label: "Contact", href: "/contact-us#contact" },
 ];
 
 function ArrowUpRight() {
@@ -59,16 +60,70 @@ function FooterLink({
   children,
 }: {
   href: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <Link
       href={href}
-      className="group inline-flex items-center gap-2 text-sm text-white/55 transition-colors duration-300 hover:text-white"
+      className="
+        group relative inline-flex w-fit py-1
+        text-[15px] font-medium leading-6 text-white/80
+        transition-colors duration-300 hover:text-white
+        focus-visible:outline-none focus-visible:ring-2
+        focus-visible:ring-[#f264a8] focus-visible:ring-offset-2
+        focus-visible:ring-offset-[#102957]
+      "
     >
-      <span className="h-1 w-1 rounded-full bg-[#f264a8] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-      {children}
+      <span>{children}</span>
+
+      {/* Hover: left → right | Hover out: right → left */}
+      <span
+        aria-hidden="true"
+        className="
+          absolute -bottom-0.5 left-0 h-px w-full bg-[#f264a8]
+          origin-left scale-x-0
+          transition-transform duration-500
+          ease-[cubic-bezier(0.22,1,0.36,1)]
+          group-hover:scale-x-100
+        "
+      />
     </Link>
+  );
+}
+
+function FooterTextLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      className="
+        group relative inline-flex w-fit py-0.5
+        text-[15px] font-medium text-white/85
+        transition-colors duration-300 hover:text-white
+        focus-visible:outline-none focus-visible:ring-2
+        focus-visible:ring-[#f264a8] focus-visible:ring-offset-2
+        focus-visible:ring-offset-[#102957]
+      "
+    >
+      <span>{children}</span>
+
+      {/* Hover: left → right | Hover out: right → left */}
+      <span
+        aria-hidden="true"
+        className="
+          absolute -bottom-0.5 left-0 h-px w-full bg-[#f264a8]
+          origin-left scale-x-0
+          transition-transform duration-500
+          ease-[cubic-bezier(0.22,1,0.36,1)]
+          group-hover:scale-x-100
+        "
+      />
+    </a>
   );
 }
 
@@ -76,29 +131,49 @@ export default function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="overflow-hidden bg-[#102957] text-white">
-      <div className="mx-auto max-w-[1540px] px-4 sm:px-7 md:px-10 lg:px-12 xl:px-14">
-        {/* Top CTA */}
-        <div className="flex flex-col gap-6 border-b border-white/10 py-10 sm:py-12 lg:flex-row lg:items-end lg:justify-between lg:py-16">
+    <footer className="relative overflow-hidden bg-[#102957] text-white">
+      {/* Background */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -left-40 top-20 h-[30rem] w-[30rem] rounded-full bg-[#225a98]/35 blur-3xl" />
+        <div className="absolute -bottom-40 -right-32 h-[34rem] w-[34rem] rounded-full bg-[#f264a8]/15 blur-3xl" />
+        <div className="absolute left-[43%] top-[42%] h-[20rem] w-[20rem] rounded-full bg-[#a855f7]/10 blur-3xl" />
+      </div>
+
+      <div className="relative mx-auto max-w-[1540px] px-5 sm:px-7 md:px-10 lg:px-12 xl:px-14">
+        {/* CTA */}
+        <div className="flex flex-col gap-7 border-b border-white/15 py-12 sm:py-14 lg:flex-row lg:items-end lg:justify-between lg:py-16">
           <div className="max-w-3xl">
-            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.22em] text-[#f264a8]">
-              Let&apos;s Build Growth
+            <p className="mb-4 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.22em] text-[#f264a8]">
+              <span className="h-px w-8 bg-[#f264a8]" />
+              Let&apos;s build growth
             </p>
 
             <h2
-              className="text-[clamp(2.7rem,6vw,6rem)] font-semibold leading-[0.84] tracking-[-0.075em]"
+              className="text-[clamp(2.8rem,6vw,6rem)] font-semibold leading-[0.84] tracking-[-0.075em]"
               style={{ fontFamily: "var(--font-cormorant), serif" }}
             >
               Ready to turn more traffic into{" "}
               <span className="text-[#f264a8]">revenue?</span>
             </h2>
+
+            <p className="mt-5 max-w-xl text-sm leading-6 text-white/65 sm:text-base sm:leading-7">
+              Get a focused growth conversation and discover where your
+              e-commerce brand can scale faster.
+            </p>
           </div>
 
           <Link
-            href="/contact-us"
-            className="group inline-flex w-fit items-center gap-3 rounded-full bg-[#f264a8] px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] text-white transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:text-[#102957] hover:shadow-[0_16px_35px_rgba(242,100,168,0.28)]"
+            href="/contact-us#contact"
+            className="
+              group inline-flex w-fit items-center gap-3 rounded-full
+              bg-[#f264a8] px-6 py-4 text-xs font-bold uppercase
+              tracking-[0.14em] text-white transition-all duration-300
+              hover:-translate-y-1 hover:bg-white hover:text-[#102957]
+              hover:shadow-[0_18px_40px_rgba(242,100,168,0.30)]
+            "
           >
-            Schedule a Meeting
+            Schedule a Growth Call
+
             <span className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1">
               <ArrowUpRight />
             </span>
@@ -106,7 +181,7 @@ export default function SiteFooter() {
         </div>
 
         {/* Footer content */}
-        <div className="grid gap-10 py-10 sm:grid-cols-2 sm:gap-12 sm:py-14 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr] lg:py-16">
+        <div className="grid gap-10 py-12 sm:grid-cols-2 sm:gap-x-10 sm:gap-y-12 sm:py-14 lg:grid-cols-[1.45fr_1fr_1fr_1.3fr] lg:gap-12 lg:py-16">
           {/* Brand */}
           <div>
             <Link
@@ -115,18 +190,18 @@ export default function SiteFooter() {
               aria-label="Brandify Digital Home"
             >
               <span
-                className="text-[clamp(2rem,3vw,3.2rem)] font-semibold tracking-[-0.08em]"
+                className="text-[clamp(2.3rem,3vw,3.4rem)] font-semibold tracking-[-0.08em]"
                 style={{ fontFamily: "var(--font-cormorant), serif" }}
               >
                 Brandify<span className="text-[#f264a8]">.</span>
               </span>
 
-              <span className="mt-2 text-[9px] font-bold uppercase tracking-[0.2em] text-white/45">
+              <span className="mt-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/55">
                 Digital
               </span>
             </Link>
 
-            <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/55">
+            <p className="mt-6 max-w-sm text-[15px] leading-7 text-white/70">
               Performance-driven digital marketing for e-commerce brands ready
               to grow smarter, scale stronger and convert more.
             </p>
@@ -137,7 +212,7 @@ export default function SiteFooter() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Brandify Digital on Facebook"
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/15 text-white/70 transition-all duration-300 hover:-translate-y-1 hover:border-[#f264a8] hover:bg-[#f264a8] hover:text-white"
+                className="grid h-11 w-11 place-items-center rounded-full border border-white/20 text-white/85 transition-all duration-300 hover:-translate-y-1 hover:border-[#f264a8] hover:bg-[#f264a8] hover:text-white"
               >
                 <FacebookIcon />
               </a>
@@ -147,7 +222,7 @@ export default function SiteFooter() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Brandify Digital on LinkedIn"
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/15 text-white/70 transition-all duration-300 hover:-translate-y-1 hover:border-[#4c9cf5] hover:bg-[#4c9cf5] hover:text-white"
+                className="grid h-11 w-11 place-items-center rounded-full border border-white/20 text-white/85 transition-all duration-300 hover:-translate-y-1 hover:border-[#4c9cf5] hover:bg-[#4c9cf5] hover:text-white"
               >
                 <LinkedinIcon />
               </a>
@@ -157,7 +232,7 @@ export default function SiteFooter() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Chat with Brandify Digital on WhatsApp"
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/15 text-white/70 transition-all duration-300 hover:-translate-y-1 hover:border-[#22a57a] hover:bg-[#22a57a] hover:text-white"
+                className="grid h-11 w-11 place-items-center rounded-full border border-white/20 text-white/85 transition-all duration-300 hover:-translate-y-1 hover:border-[#22a57a] hover:bg-[#22a57a] hover:text-white"
               >
                 <WhatsappIcon />
               </a>
@@ -166,7 +241,7 @@ export default function SiteFooter() {
 
           {/* Services */}
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/55">
               Services
             </p>
 
@@ -179,13 +254,16 @@ export default function SiteFooter() {
             </nav>
           </div>
 
-          {/* Navigation */}
+          {/* Explore */}
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/55">
               Explore
             </p>
 
-            <nav className="mt-6 flex flex-col gap-3" aria-label="Footer navigation">
+            <nav
+              className="mt-6 flex flex-col gap-3"
+              aria-label="Footer navigation"
+            >
               {links.map((link) => (
                 <FooterLink key={link.label} href={link.href}>
                   {link.label}
@@ -196,56 +274,49 @@ export default function SiteFooter() {
 
           {/* Contact */}
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/55">
               Contact
             </p>
 
-            <div className="mt-6 space-y-5 text-sm leading-relaxed text-white/60">
+            <div className="mt-6 space-y-6 text-sm leading-relaxed text-white/70">
               <div>
-                <span className="mb-1 block text-[10px] font-bold uppercase tracking-[0.15em] text-white/35">
+                <span className="mb-2 block text-[10px] font-bold uppercase tracking-[0.15em] text-white/45">
                   Email
                 </span>
 
-                <a
-                  href="mailto:hello@brandify.digital"
-                  className="transition-colors duration-300 hover:text-[#f264a8]"
-                >
+                <FooterTextLink href="mailto:hello@brandify.digital">
                   hello@brandify.digital
-                </a>
+                </FooterTextLink>
               </div>
 
               <div>
-                <span className="mb-1 block text-[10px] font-bold uppercase tracking-[0.15em] text-white/35">
+                <span className="mb-2 block text-[10px] font-bold uppercase tracking-[0.15em] text-white/45">
                   Hotline
                 </span>
 
-                <a
-                  href="tel:+8801788744115"
-                  className="block transition-colors duration-300 hover:text-[#f264a8]"
-                >
-                  +880 1788 744115
-                </a>
+                <div className="flex flex-col gap-2">
+                  <FooterTextLink href="tel:+8801788744115">
+                    +880 1788 744115
+                  </FooterTextLink>
 
-                <a
-                  href="tel:+15053784744"
-                  className="block transition-colors duration-300 hover:text-[#f264a8]"
-                >
-                  +1 505 378 4744
-                </a>
+                  <FooterTextLink href="tel:+15053784744">
+                    +1 505 378 4744
+                  </FooterTextLink>
+                </div>
               </div>
 
               <div>
-                <span className="mb-1 block text-[10px] font-bold uppercase tracking-[0.15em] text-white/35">
+                <span className="mb-2 block text-[10px] font-bold uppercase tracking-[0.15em] text-white/45">
                   Offices
                 </span>
 
-                <p>
+                <p className="max-w-sm text-[14px] leading-6 text-white/72">
                   Suite R, 1209 Mountain Road Pl NE,
                   <br />
                   Albuquerque, NM 87110, USA
                 </p>
 
-                <p className="mt-3">
+                <p className="mt-4 max-w-sm text-[14px] leading-6 text-white/72">
                   House No–1151, Road–10, Avenue–11,
                   <br />
                   Mirpur DOHS, Dhaka 1216, Bangladesh
@@ -256,23 +327,14 @@ export default function SiteFooter() {
         </div>
 
         {/* Bottom */}
-        <div className="flex flex-col gap-4 border-t border-white/10 py-6 text-[10px] font-bold uppercase tracking-[0.14em] text-white/35 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 border-t border-white/15 py-7 text-[10px] font-bold uppercase tracking-[0.14em] text-white/50 sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} Brandify Digital. All rights reserved.</p>
 
-          <div className="flex flex-wrap gap-x-5 gap-y-2">
-            <Link
-              href="/privacy-policy"
-              className="transition-colors duration-300 hover:text-white"
-            >
-              Privacy Policy
-            </Link>
-
-            <Link
-              href="/terms-condition"
-              className="transition-colors duration-300 hover:text-white"
-            >
+          <div className="flex flex-wrap gap-x-6 gap-y-3">
+            <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
+            <FooterLink href="/terms-condition">
               Terms & Conditions
-            </Link>
+            </FooterLink>
           </div>
         </div>
       </div>

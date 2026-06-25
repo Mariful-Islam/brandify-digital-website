@@ -146,8 +146,6 @@ export default function ExpertiseHorizontal() {
       const button = q("[data-expertise-button]");
       const rail = q("[data-expertise-rail]");
       const progress = q("[data-progress]");
-      const closeLayer = q("[data-close-layer]");
-      const closeLine = q("[data-close-line]");
       const activeCount = q("[data-active-count]");
 
       const prefersReducedMotion = window.matchMedia(
@@ -155,13 +153,12 @@ export default function ExpertiseHorizontal() {
       ).matches;
 
       if (prefersReducedMotion) {
-        gsap.set(
-          [kicker, title, description, button, rail, ...cards],
-          {
-            autoAlpha: 1,
-            clearProps: "transform",
-          }
-        );
+        gsap.set([kicker, title, description, button, rail, ...cards], {
+          autoAlpha: 1,
+          clearProps: "transform",
+        });
+
+        gsap.set(progress, { scaleX: 1 });
 
         return;
       }
@@ -173,22 +170,10 @@ export default function ExpertiseHorizontal() {
 
       gsap.set(cards, {
         autoAlpha: 0,
-        y: 54,
-        scale: 0.94,
-      });
-
-      gsap.set(closeLayer, {
-        autoAlpha: 0,
-        y: 18,
+        y: 42,
         scale: 0.96,
       });
 
-      gsap.set(closeLine, {
-        scaleX: 0,
-        transformOrigin: "left center",
-      });
-
-      /* Section load animation */
       const intro = gsap.timeline({
         scrollTrigger: {
           trigger: section,
@@ -241,7 +226,7 @@ export default function ExpertiseHorizontal() {
             y: 0,
             duration: 0.5,
           },
-          "-=0.48"
+          "-=0.45"
         )
         .to(
           cards,
@@ -251,12 +236,11 @@ export default function ExpertiseHorizontal() {
             scale: 1,
             duration: 0.65,
             stagger: 0.08,
-            ease: "back.out(1.45)",
+            ease: "back.out(1.35)",
           },
-          "-=0.32"
+          "-=0.3"
         );
 
-      /* Premium GSAP hover effect on card surface */
       const hoverCleanups = cards.map((card) => {
         const surface = card.querySelector<HTMLElement>(
           "[data-card-surface]"
@@ -290,17 +274,17 @@ export default function ExpertiseHorizontal() {
 
         const onEnter = () => {
           gsap.to(surface, {
-            y: -10,
-            scale: 1.018,
-            duration: 0.42,
+            y: -9,
+            scale: 1.015,
+            duration: 0.4,
             ease: "power3.out",
             boxShadow: "0 28px 70px rgba(16,41,87,0.16)",
           });
 
           gsap.to(icon, {
-            scale: 1.12,
-            rotate: 12,
-            duration: 0.42,
+            scale: 1.1,
+            rotate: 10,
+            duration: 0.38,
             ease: "back.out(2)",
           });
 
@@ -308,14 +292,14 @@ export default function ExpertiseHorizontal() {
             x: 5,
             y: -5,
             rotate: 10,
-            duration: 0.38,
+            duration: 0.35,
             ease: "power3.out",
           });
 
           gsap.to(glow, {
             autoAlpha: 1,
             scale: 1.15,
-            duration: 0.4,
+            duration: 0.38,
             ease: "power3.out",
           });
         };
@@ -326,8 +310,8 @@ export default function ExpertiseHorizontal() {
           const x = (event.clientX - rect.left) / rect.width - 0.5;
           const y = (event.clientY - rect.top) / rect.height - 0.5;
 
-          rotateY(x * 7);
-          rotateX(y * -6);
+          rotateY(x * 6);
+          rotateX(y * -5);
         };
 
         const onLeave = () => {
@@ -398,13 +382,6 @@ export default function ExpertiseHorizontal() {
           },
         });
 
-        /*
-          0% → 78%:
-          Horizontal service journey
-
-          78% → 100%:
-          Closing animation before the section releases
-        */
         horizontalTimeline
           .to(
             track,
@@ -432,45 +409,15 @@ export default function ExpertiseHorizontal() {
               ease: "none",
             },
             0
-          )
-          .to(
-            rail,
-            {
-              autoAlpha: 0.16,
-              y: -40,
-              scale: 0.965,
-              duration: 0.22,
-              ease: "power2.in",
-            },
-            0.79
-          )
-          .to(
-            closeLayer,
-            {
-              autoAlpha: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.16,
-              ease: "power3.out",
-            },
-            0.84
-          )
-          .to(
-            closeLine,
-            {
-              scaleX: 1,
-              duration: 0.14,
-              ease: "power3.out",
-            },
-            0.87
           );
 
         horizontalTimeline.eventCallback("onUpdate", () => {
-          const progressValue = horizontalTimeline.progress();
-
           if (!activeCount.length) return;
 
-          const serviceProgress = Math.min(progressValue / 0.78, 0.999);
+          const serviceProgress = Math.min(
+            horizontalTimeline.progress() / 0.78,
+            0.999
+          );
 
           const activeIndex = Math.min(
             services.length,
@@ -483,17 +430,6 @@ export default function ExpertiseHorizontal() {
         return () => {
           horizontalTimeline.kill();
         };
-      });
-
-      media.add("(max-width: 1023px)", () => {
-        gsap.set([kicker, title, description, button, rail, ...cards], {
-          autoAlpha: 1,
-          clearProps: "transform",
-        });
-
-        gsap.set(progress, {
-          scaleX: 1,
-        });
       });
 
       requestAnimationFrame(() => ScrollTrigger.refresh());
@@ -511,21 +447,34 @@ export default function ExpertiseHorizontal() {
     <section
       id="expertise"
       ref={sectionRef}
-      className="relative h-[100svh] overflow-hidden bg-[#fff9fc] text-[#102957]"
+      className="
+        relative min-h-[100svh] overflow-x-clip
+        bg-[#fff9fc] text-[#102957]
+        lg:h-[100svh] lg:min-h-0 lg:overflow-hidden
+      "
     >
-      {/* Beauty background */}
+      {/* Background */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-48 top-[-12rem] h-[33rem] w-[33rem] rounded-full bg-[#cce5ff]/60 blur-3xl" />
         <div className="absolute -bottom-56 -right-40 h-[38rem] w-[38rem] rounded-full bg-[#ffd4e7]/70 blur-3xl" />
         <div className="absolute left-[42%] top-[34%] h-[20rem] w-[20rem] rounded-full bg-[#f0ddff]/50 blur-3xl" />
       </div>
 
-      <div className="relative mx-auto grid h-full max-w-[1600px] items-center gap-10 px-6 lg:grid-cols-[0.72fr_1.5fr] lg:px-12 xl:px-20">
-        {/* Left copy */}
-        <div className="relative z-10 max-w-[470px]">
+      <div
+        className="
+          relative mx-auto grid max-w-[1600px] gap-12 px-6 py-20
+          sm:gap-14 sm:px-8 sm:py-24
+          md:px-10 md:py-24
+          lg:h-full lg:grid-cols-[0.72fr_1.5fr] lg:items-center
+          lg:gap-10 lg:px-12 lg:py-0
+          xl:px-20
+        "
+      >
+        {/* Left content */}
+        <div className="relative z-10 max-w-[580px] lg:max-w-[470px]">
           <div
             data-expertise-kicker
-            className="mb-5 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#225a98] sm:text-xs"
+            className="mb-4 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#225a98] sm:mb-5 sm:text-xs"
           >
             <span className="h-px w-9 bg-[#f264a8]" />
             Beauty Growth Expertise
@@ -533,7 +482,12 @@ export default function ExpertiseHorizontal() {
 
           <h2
             data-expertise-title
-            className="text-[clamp(3rem,4.2vw,5.25rem)] font-semibold leading-[0.86] tracking-[-0.065em] text-[#102957]"
+            className="
+              text-[clamp(2.8rem,11vw,4.25rem)]
+              font-semibold leading-[0.86] tracking-[-0.065em] text-[#102957]
+              sm:text-[clamp(3.5rem,8vw,4.85rem)]
+              lg:text-[clamp(3rem,4.2vw,5.25rem)]
+            "
             style={{ fontFamily: "var(--font-cormorant), serif" }}
           >
             Everything your beauty brand needs to grow beautifully.
@@ -541,7 +495,7 @@ export default function ExpertiseHorizontal() {
 
           <p
             data-expertise-description
-            className="mt-6 max-w-md text-[15px] font-medium leading-7 text-[#102957]/68 sm:text-base sm:leading-8"
+            className="mt-5 max-w-md text-[14px] font-medium leading-6 text-[#102957]/68 sm:mt-6 sm:text-base sm:leading-8"
           >
             From attention to conversion, every service is designed to connect
             the complete growth journey.
@@ -550,7 +504,7 @@ export default function ExpertiseHorizontal() {
           <a
             data-expertise-button
             href="#contact"
-            className="group mt-7 inline-flex items-center gap-3 rounded-full bg-[#102957] px-5 py-3.5 text-sm font-bold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-[#f264a8]"
+            className="group mt-6 inline-flex items-center gap-3 rounded-full bg-[#102957] px-5 py-3.5 text-sm font-bold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-[#f264a8] sm:mt-7"
           >
             Build Your Growth System
 
@@ -586,18 +540,24 @@ export default function ExpertiseHorizontal() {
           </div>
         </div>
 
-        {/* Right rail */}
-        <div
-          data-expertise-rail
-          className="relative min-w-0 lg:h-[60svh]"
-        >
+        {/* Service rail */}
+        <div data-expertise-rail className="relative min-w-0">
           <div
             ref={viewportRef}
-            className="relative h-full overflow-hidden"
+            className="
+              relative -mr-6 overflow-x-auto pb-4 pr-6
+              sm:-mr-8 sm:pr-8
+              md:-mr-10 md:pr-10
+              lg:mr-0 lg:h-[60svh] lg:overflow-hidden lg:p-0
+            "
           >
             <div
               ref={trackRef}
-              className="flex h-full w-max items-center gap-5 pr-[18vw] lg:gap-7"
+              className="
+                flex w-max items-stretch gap-4 pr-6
+                sm:gap-5 sm:pr-8
+                lg:h-full lg:items-center lg:gap-7 lg:pr-[18vw]
+              "
             >
               {services.map((service, index) => (
                 <div
@@ -605,11 +565,16 @@ export default function ExpertiseHorizontal() {
                   ref={(node) => {
                     cardRefs.current[index] = node;
                   }}
-                  className="h-full shrink-0 basis-[min(82vw,335px)] lg:basis-[min(27vw,370px)] h-[200px]"
+                  className="
+                    h-[380px] shrink-0 basis-[82vw] snap-start
+                    sm:h-[395px] sm:basis-[min(70vw,360px)]
+                    md:h-[410px] md:basis-[min(47vw,390px)]
+                    lg:h-full lg:basis-[min(27vw,370px)] lg:snap-none
+                  "
                 >
                   <article
                     data-card-surface
-                    className={`relative flex h-full min-h-[360px] flex-col overflow-hidden rounded-[2rem] border p-7 shadow-[0_14px_35px_rgba(16,41,87,0.08)] sm:p-8 ${service.card}`}
+                    className={`relative flex h-full flex-col overflow-hidden rounded-[1.7rem] border p-6 shadow-[0_14px_35px_rgba(16,41,87,0.08)] sm:rounded-[2rem] sm:p-7 lg:p-8 ${service.card}`}
                   >
                     <div
                       data-card-glow
@@ -621,7 +586,7 @@ export default function ExpertiseHorizontal() {
                     <div className="relative z-10 flex items-start justify-between">
                       <span
                         data-card-icon
-                        className={`grid h-12 w-12 place-items-center rounded-2xl text-white ${service.icon}`}
+                        className={`grid h-11 w-11 place-items-center rounded-2xl text-white sm:h-12 sm:w-12 ${service.icon}`}
                       >
                         <SparkIcon />
                       </span>
@@ -637,13 +602,13 @@ export default function ExpertiseHorizontal() {
 
                     <div className="relative z-10 mt-auto">
                       <p
-                        className={`text-[10px] font-bold uppercase tracking-[0.16em] ${service.labelColor}`}
+                        className={`text-[9px] font-bold uppercase tracking-[0.16em] sm:text-[10px] ${service.labelColor}`}
                       >
                         {service.label}
                       </p>
 
                       <h3
-                        className={`mt-4 text-[2rem] font-semibold leading-[0.9] tracking-[-0.06em] sm:text-[2.45rem] ${
+                        className={`mt-4 text-[1.85rem] font-semibold leading-[0.9] tracking-[-0.06em] sm:text-[2.2rem] lg:text-[2.45rem] ${
                           service.dark ? "text-white" : "text-[#102957]"
                         }`}
                         style={{ fontFamily: "var(--font-cormorant), serif" }}
@@ -652,7 +617,7 @@ export default function ExpertiseHorizontal() {
                       </h3>
 
                       <p
-                        className={`mt-5 text-[15px] font-medium leading-7 ${
+                        className={`mt-4 text-[14px] font-medium leading-6 sm:mt-5 sm:text-[15px] sm:leading-7 ${
                           service.dark
                             ? "text-white/70"
                             : "text-[#102957]/62"
@@ -661,9 +626,9 @@ export default function ExpertiseHorizontal() {
                         {service.description}
                       </p>
 
-                      <div className="mt-8 flex items-center justify-between">
+                      <div className="mt-6 flex items-center justify-between sm:mt-8">
                         <span
-                          className={`h-px w-20 ${
+                          className={`h-px w-16 sm:w-20 ${
                             service.dark ? "bg-[#f8b7d3]" : service.accent
                           }`}
                         />
@@ -686,20 +651,19 @@ export default function ExpertiseHorizontal() {
             </div>
           </div>
 
-          {/* Progress */}
+          {/* Desktop-only progress */}
           <div className="absolute bottom-0 left-0 hidden w-full lg:block">
             <div className="h-px bg-[#102957]/10" />
+
             <div
               data-progress
               className="mt-[-1px] h-[2px] w-full origin-left scale-x-0 bg-gradient-to-r from-[#4c9cf5] via-[#f264a8] to-[#102957]"
             />
           </div>
 
-
-
-
-
-
+          <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#102957]/40 lg:hidden">
+            Swipe to explore services →
+          </p>
         </div>
       </div>
     </section>

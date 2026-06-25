@@ -4,16 +4,13 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import hero1 from '@/app/assets/images/hero/Home-Hero-img (1).webp'
-import hero2 from '@/app/assets/images/hero/Home-Hero-img.webp'
-import hero3 from '@/app/assets/images/hero/hero-img-2.webp'
-import hero4 from '@/app/assets/images/hero/hero-img-3.webp'
 
-
+import hero1 from "@/app/assets/images/hero/Home-Hero-img (1).webp";
+import hero2 from "@/app/assets/images/hero/Home-Hero-img.webp";
+import hero3 from "@/app/assets/images/hero/hero-img-2.webp";
+import hero4 from "@/app/assets/images/hero/hero-img-3.webp";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
-
-
 
 const rotatingServices = [
   "Paid Media",
@@ -164,7 +161,6 @@ export default function BeautyGrowthHero() {
       const core = q("[data-core]");
       const coreFloat = q("[data-core-float]");
       const orbit = q("[data-orbit]");
-      const scrollHint = q("[data-scroll-hint]");
 
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
@@ -173,7 +169,6 @@ export default function BeautyGrowthHero() {
       const setFinalCounters = () => {
         counters.forEach((counter, index) => {
           const stat = stats[index];
-
           counter.textContent = `${stat.prefix}${stat.value}${stat.suffix}`;
         });
       };
@@ -188,7 +183,6 @@ export default function BeautyGrowthHero() {
             statItems,
             visual,
             photoCards,
-            scrollHint,
           ],
           {
             autoAlpha: 1,
@@ -200,19 +194,15 @@ export default function BeautyGrowthHero() {
         return;
       }
 
-      /* Initial hero state */
       gsap.set(titleLines, {
         autoAlpha: 0,
         yPercent: 115,
       });
 
-      gsap.set(
-        [eyebrow, description, actions, statItems, scrollHint],
-        {
-          autoAlpha: 0,
-          y: 24,
-        }
-      );
+      gsap.set([eyebrow, description, actions, statItems], {
+        autoAlpha: 0,
+        y: 24,
+      });
 
       gsap.set(visual, {
         autoAlpha: 0,
@@ -220,11 +210,6 @@ export default function BeautyGrowthHero() {
         scale: 0.94,
       });
 
-      /*
-        Cards begin in a small layered stack at the center.
-        The tiny x/y offsets make it look like real visual cards,
-        not one completely hidden image.
-      */
       gsap.set(photoCards, {
         xPercent: -50,
         yPercent: -50,
@@ -294,7 +279,6 @@ export default function BeautyGrowthHero() {
           ease: "expo.out",
         });
 
-      /* First-load animation */
       const intro = gsap.timeline({
         paused: true,
         defaults: {
@@ -373,20 +357,10 @@ export default function BeautyGrowthHero() {
           },
           "-=0.52"
         )
-        .to(
-          scrollHint,
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.4,
-          },
-          "-=0.1"
-        )
         .call(() => {
           serviceLoop.play(0);
         }, [], "+=0.45");
 
-      /* Floating movement inside cards — no conflict with scroll spread */
       const floatingTweens = photoInnerCards.map((card, index) =>
         gsap.to(card, {
           y: index % 2 === 0 ? -7 : 7,
@@ -413,12 +387,6 @@ export default function BeautyGrowthHero() {
         ease: "sine.inOut",
       });
 
-      /*
-        Sticky hero:
-        cards spread only while pinned.
-        Once the spread finishes, GSAP releases the hero
-        and the next page section scrolls normally.
-      */
       const media = gsap.matchMedia();
 
       media.add("(min-width: 1024px)", () => {
@@ -461,16 +429,6 @@ export default function BeautyGrowthHero() {
           0
         );
 
-        spreadTimeline.to(
-          scrollHint,
-          {
-            autoAlpha: 0,
-            duration: 0.25,
-            ease: "none",
-          },
-          0.55
-        );
-
         return () => {
           spreadTimeline.kill();
         };
@@ -483,16 +441,10 @@ export default function BeautyGrowthHero() {
         if (started) return;
 
         started = true;
-
         fallbackTimer?.kill();
         intro.play(0);
       };
 
-      /*
-        If your preloader dispatches "site-preloader-complete",
-        hero starts exactly after loading.
-        The fallback prevents an invisible hero if there is no event.
-      */
       window.addEventListener("site-preloader-complete", startHero, {
         once: true,
       });
@@ -530,28 +482,42 @@ export default function BeautyGrowthHero() {
   return (
     <section
       ref={heroRef}
-      className="relative h-[100svh] overflow-hidden bg-[#fff9fc] text-[#102957]"
+      className="
+        relative min-h-[100svh] overflow-x-hidden
+        bg-[#fff9fc] text-[#102957]
+        lg:h-[100svh] lg:min-h-0 lg:overflow-hidden
+      "
     >
-      {/* Beauty background */}
+      {/* Background */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-48 -top-52 h-[36rem] w-[36rem] rounded-full bg-[#cce5ff]/65 blur-3xl" />
         <div className="absolute -bottom-52 -right-44 h-[40rem] w-[40rem] rounded-full bg-[#ffd1e5]/75 blur-3xl" />
         <div className="absolute left-[42%] top-[30%] h-[22rem] w-[22rem] rounded-full bg-[#efdcff]/50 blur-3xl" />
       </div>
 
-      <div className="relative mx-auto grid h-full max-w-[1500px] items-center gap-8 px-6 lg:grid-cols-[1.02fr_.98fr] lg:gap-10 lg:px-12 xl:px-20">
-        {/* Copy */}
+      <div
+        className="
+          relative mx-auto grid min-h-[100svh] max-w-[1500px]
+          items-center gap-8 px-6 py-24
+          sm:px-8 sm:py-28
+          md:px-10 md:py-24
+          lg:h-full lg:min-h-0 lg:grid-cols-[1.02fr_.98fr]
+          lg:gap-10 lg:px-12 lg:py-0
+          xl:px-20
+        "
+      >
+        {/* Content */}
         <div className="relative z-10 max-w-[720px]">
           <div
             data-eyebrow
-            className="mb-5 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#225a98] sm:text-xs"
+            className="mb-4 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#225a98] sm:mb-5 sm:text-xs"
           >
             <span className="h-px w-9 bg-[#f264a8]" />
             Beauty eCommerce Growth Studio
           </div>
 
           <h1
-            className="text-[clamp(3rem,5vw,6rem)] font-semibold leading-[0.87] tracking-[-0.06em]"
+            className="text-[clamp(2.85rem,11vw,6rem)] font-semibold leading-[0.87] tracking-[-0.06em] sm:text-[clamp(3.5rem,7vw,6rem)]"
             style={{ fontFamily: "var(--font-cormorant), serif" }}
           >
             <span className="block overflow-hidden">
@@ -579,13 +545,16 @@ export default function BeautyGrowthHero() {
 
           <p
             data-description
-            className="mt-6 max-w-[590px] text-[15px] font-medium leading-7 text-[#102957]/72 sm:text-base sm:leading-8"
+            className="mt-5 max-w-[590px] text-[14px] font-medium leading-6 text-[#102957]/72 sm:mt-6 sm:text-base sm:leading-8"
           >
             We create high-performing campaigns, conversion systems, tracking,
             and storefronts that turn beauty attention into measurable revenue.
           </p>
 
-          <div data-actions className="mt-7 flex flex-wrap items-center gap-4">
+          <div
+            data-actions
+            className="mt-6 flex flex-wrap items-center gap-3 sm:mt-7 sm:gap-4"
+          >
             <a
               href="#contact"
               className="group inline-flex items-center gap-3 rounded-full bg-[#102957] px-5 py-3.5 text-sm font-bold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-[#f264a8]"
@@ -605,8 +574,7 @@ export default function BeautyGrowthHero() {
             </a>
           </div>
 
-          {/* Animated counters */}
-          <div className="mt-8 grid max-w-[590px] grid-cols-3 border-t border-[#102957]/12 pt-5">
+          <div className="mt-7 grid max-w-[590px] grid-cols-3 border-t border-[#102957]/12 pt-5 sm:mt-8">
             {stats.map((stat) => (
               <div
                 key={stat.label}
@@ -628,7 +596,7 @@ export default function BeautyGrowthHero() {
           </div>
         </div>
 
-        {/* Visual canvas */}
+        {/* Desktop visual */}
         <div
           data-visual
           className="relative mx-auto hidden h-[min(65svh,570px)] w-full max-w-[650px] lg:block"
@@ -644,7 +612,6 @@ export default function BeautyGrowthHero() {
             <span className="absolute bottom-[9%] right-[20%] h-5 w-5 rounded-full bg-[#ffd2e4] shadow-[0_0_0_8px_rgba(255,210,228,0.4)]" />
           </div>
 
-          {/* Center growth core */}
           <div
             data-core
             className="absolute left-1/2 top-1/2 z-[5] -translate-x-1/2 -translate-y-1/2"
@@ -674,7 +641,6 @@ export default function BeautyGrowthHero() {
             </div>
           </div>
 
-          {/* Eight stacked image cards */}
           {photos.map((photo, index) => (
             <article
               key={photo.title}
@@ -708,17 +674,6 @@ export default function BeautyGrowthHero() {
             </article>
           ))}
         </div>
-      </div>
-
-      <div
-        data-scroll-hint
-        className="absolute bottom-5 left-1/2 z-40 -translate-x-1/2 text-center"
-      >
-        <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#102957]/45">
-          Scroll to unfold the system
-        </p>
-
-        <span className="mx-auto mt-2 block h-7 w-px bg-gradient-to-b from-[#f264a8] to-transparent" />
       </div>
     </section>
   );
